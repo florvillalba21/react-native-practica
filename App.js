@@ -28,12 +28,16 @@ export default function App() {
   if (characters.length > 0) {
     return (
       <View style={styles.container}>
+
         <View>
+
           <FlatList
             numColumns="2"
             data={characters}
             renderItem={({ item }) => (
+
               <View style={styles.viewCharacter}>
+
                 <Text>{item.name}</Text>
 
                 <Image
@@ -48,12 +52,14 @@ export default function App() {
         </View>
 
         <StatusBar style="auto" />
+
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
+      
       <Button
         style={styles.btn}
         color={"#e2ac3f"}

@@ -6,7 +6,6 @@ import {
   Image,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from "react-native";
 
@@ -15,7 +14,7 @@ export default function App() {
   // opcional: consumir api o crear lista prop
   // mostrar en pantalla solo si se presiona en un boton
 
-  const consumerApi = () => {
+  const consumeApi = () => {
     fetch(
       "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=%27Normal%20Monster%27"
     )
@@ -25,30 +24,45 @@ export default function App() {
       .catch((err) => console.log(err));
   };
 
+
+  //funcion que elimina un character del estado character
+  const deletedCharacter = (item) =>
+    setCharacters(characters.toSpliced(item, 1));
+
+
+  //funcion que renderiza los items
+  const renderItems = ({ item }) => (
+
+    <View style={styles.viewCharacter}>
+
+      <Text>{item.name}</Text>
+
+      <Image
+        style={styles.imgCharacter}
+        source={{
+          uri: item.card_images[0].image_url,
+        }}
+      />
+
+      <Button
+        color={"#e2ac3f"}
+        title="Elminar"
+        onPress={() => deletedCharacter(item)}
+      />
+
+    </View>
+  );
+
+
+  //renderizado condicional
   if (characters.length > 0) {
     return (
       <View style={styles.container}>
 
         <View>
 
-          <FlatList
-            numColumns="2"
-            data={characters}
-            renderItem={({ item }) => (
+          <FlatList numColumns="2" data={characters} renderItem={renderItems} />
 
-              <View style={styles.viewCharacter}>
-
-                <Text>{item.name}</Text>
-
-                <Image
-                  style={styles.imgCharacter}
-                  source={{
-                    uri: item.card_images[0].image_url,
-                  }}
-                />
-              </View>
-            )}
-          />
         </View>
 
         <StatusBar style="auto" />
@@ -59,19 +73,21 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      
+
       <Button
-        style={styles.btn}
+        style={{ with: 100 }}
         color={"#e2ac3f"}
         title="Mostrar lista"
-        onPress={consumerApi}
+        onPress={consumeApi}
       />
 
       <StatusBar style="auto" />
+
     </View>
   );
 }
 
+//styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

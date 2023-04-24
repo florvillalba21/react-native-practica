@@ -1,51 +1,65 @@
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  Button,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 
 export default function App() {
-  const [nota, setNota] = useState("");
-  const [list, setList] = useState([]);
+  const [characters, setCharacters] = useState([]);
+  // opcional: consumir api o crear lista prop
+  // mostrar en pantalla solo si se presiona en un boton
 
-  const addTask = () => {
-    setList([...list, nota]);
+  const consumerApi = () => {
+    fetch(
+      "https://db.ygoprodeck.com/api/v7/cardinfo.php?type=%27Normal%20Monster%27"
+    )
+      .then((resApi) => resApi.json())
+      .then((res) => setCharacters(res.data.slice(0, 12)))
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
+
+  if (characters.length > 0) {
+    return (
+      <View style={styles.container}>
+        <View>
+          <FlatList
+            numColumns="2"
+            data={characters}
+            renderItem={({ item }) => (
+              <View style={styles.viewCharacter}>
+                <Text>{item.name}</Text>
+
+                <Image
+                  style={styles.imgCharacter}
+                  source={{
+                    uri: item.card_images[0].image_url,
+                  }}
+                />
+              </View>
+            )}
+          />
+        </View>
+
+        <StatusBar style="auto" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <Text>
-        Ingresa alguna tarea
-      </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Escribe la nueva tarea"
-        onChangeText={setNota}
-      />
-      <Button 
-        color="#493443"
+      <Button
         style={styles.btn}
-        onPress={addTask} 
-        title="Agregar tarea" />
-
-      <View style={{flexDirection: 'row'}}>
-       
-      {
-        list.map((task, i) => (
-          <View key={i} style={styles.viewTask}>
-            <Text style={styles.text}>
-              Tarea N° {i}
-               {task}
-            </Text>
-
-            <Button
-                onPress={() => setList(() => list.toSpliced(i, 1))}
-                title="Eliminar"
-                color="#493443"
-                style={styles.btn}
-              />
-          </View>
-        ))
-      }
-      </View>
+        color={"#e2ac3f"}
+        title="Mostrar lista"
+        onPress={consumerApi}
+      />
 
       <StatusBar style="auto" />
     </View>
@@ -55,37 +69,21 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0e2be",
+    backgroundColor: "#2a0308",
     alignItems: "center",
     justifyContent: "center",
   },
-  input: {
-    color: "black",
-    backgroundColor: "white",
-    padding: "10px",
-    width: "50%",
-    borderColor: "#619177",
-    margin: "10px",
-    borderWidth: '1px',
-    borderRadius: '10px'
-
+  viewCharacter: {
+    borderWidth: 1,
+    borderRadius: 5,
+    margin: 20,
+    backgroundColor: "#e2ac3f",
+    // width: "50%",
   },
-  btn: {
-    margin: "5px",
-    marginLeft: "10px",
+  imgCharacter: {
+    resizeMode: "contain",
+    width: 200,
+    height: 300,
+    margin: 10,
   },
-  text :{
-    margin: "20px",
-    borderBottomColor: "red",
-  },
-  viewTask:{
-    backgroundColor: '#fff',
-    borderWidth: '1px',
-    borderColor: '#619177',
-    margin: '20px',
-    padding: '10px',
-    borderRadius: '10px',
-    
-  }
-  
 });

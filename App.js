@@ -4,6 +4,7 @@ import {
   Button,
   FlatList,
   Image,
+  ImageBackground,
   StyleSheet,
   Text,
   View,
@@ -24,7 +25,7 @@ export default function App() {
       .catch((err) => console.log(err));
   };
 
-
+  const image = "https://pbs.twimg.com/media/EWITy1SWAAAJCKF?format=jpg&name=medium"
   //funcion que elimina un character del estado character
   const deletedCharacter = (item) =>
     setCharacters(characters.toSpliced(item, 1));
@@ -57,14 +58,15 @@ export default function App() {
   //renderizado condicional
   if (characters.length > 0) {
     return (
+      
       <View style={styles.container}>
 
-        <View>
+          <ImageBackground source={image} style={styles.image}>
 
-          <FlatList numColumns="2" data={characters} renderItem={renderItems} />
+            <FlatList numColumns="2" data={characters} renderItem={renderItems} />
 
-        </View>
-
+          </ImageBackground>
+    
         <StatusBar style="auto" />
 
       </View>
@@ -74,12 +76,16 @@ export default function App() {
   return (
     <View style={styles.container}>
 
-      <Button
-        style={{ with: 100 }}
-        color={"#e2ac3f"}
-        title="Mostrar lista"
-        onPress={consumeApi}
-      />
+      <ImageBackground source={image}  style={styles.image}>
+
+        <Button
+          style={{ with: 50 }}
+          color={"#e2ac3f"}
+          title="Mostrar lista"
+          onPress={consumeApi}
+        />
+        
+      </ImageBackground>
 
       <StatusBar style="auto" />
 
@@ -91,7 +97,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#2a0308",
+    // backgroundColor: "#2a0308",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -107,5 +113,13 @@ const styles = StyleSheet.create({
     width: 200,
     height: 300,
     margin: 10,
+  },
+  image: {
+    flex: 1,
+    width: "100%",
+    justifyContent: 'center',
+    position: 'absolute',
+    height: '100%',
+    
   },
 });

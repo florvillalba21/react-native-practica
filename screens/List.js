@@ -10,6 +10,7 @@ import { Searcher } from "../components/Searcher";
 
 export const List = () => {
   const [characters, setCharacters] = useState([]);
+  const[res, setRes] = useState([]);
   const publicKey = "769f0ff0d12989ea1a9c349404cf1e93";
   const privateKey = "c206acb8915ea08e5bbaa73bd49c0e8d3a9d05df";
   const timestamp = Date.now();
@@ -30,17 +31,20 @@ export const List = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  useEffect(()=>{
+    console.log(res
+      );
+  },[res])
   return (
     <>
-    <View style={styles.container}>
-      <CharacterContext.Provider value={{ characters, setCharacters }}>
-        
-        <CardCharacter />
-      </CharacterContext.Provider>
+      <View style={styles.container}>
+        <CharacterContext.Provider value={{ characters, setCharacters, res, setRes }}>
+          <Searcher />
+          <CardCharacter />
+        </CharacterContext.Provider>
 
-      <StatusBar style="auto" />
-
-    </View>
+        <StatusBar style="auto" />
+      </View>
     </>
   );
 };

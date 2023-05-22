@@ -1,9 +1,18 @@
 import { useContext } from "react";
-import { View, Text, FlatList, StyleSheet, Image, Button } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Image,
+  Button,
+  Pressable,
+} from "react-native";
 import { CharacterContext } from "../context/CharacterContext";
 
 export const CardCharacter = () => {
   const { characters, setCharacters } = useContext(CharacterContext);
+  const { res, setRes } = useContext(CharacterContext);
 
   const deletedCharacter = (item) => {
     setCharacters(characters.filter((Element) => Element != item));
@@ -24,18 +33,16 @@ export const CardCharacter = () => {
           }}
         />
 
-        <Button
-          color={"red"}
-          title="Elminar"
-          onPress={() => deletedCharacter(item)}
-        />
+        <Pressable style={styles.btn} onPress={() => deletedCharacter(item)}>
+          <Text style={styles.btnText}>Eliminar</Text>
+        </Pressable>
       </View>
     );
   };
 
   return (
     <View>
-      <FlatList numColumns="2" data={characters} renderItem={renderItems} />
+      <FlatList numColumns="2" data={res.length >0 ? res :characters} renderItem={renderItems} />
     </View>
   );
 };
@@ -49,8 +56,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   viewCharacter: {
+    
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 16,
+    padding: 10,
     margin: 20,
     backgroundColor: "#black",
     // width: "50%",
@@ -71,6 +80,20 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontSize: 20,
-    fontStyle: "italic",
+    fontWeight: "bold",
+    
+  },
+  btn: {
+    backgroundColor: "red",
+    padding: 15,
+    borderTopLeftRadius:30,
+    // borderRadius: 10,
+    borderBottomRightRadius: 30
+  },
+  btnText: {
+    textAlign: "center",
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

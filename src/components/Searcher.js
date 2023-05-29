@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { CharacterContext } from "../context/CharacterContext";
 
 import Icon from "react-native-vector-icons/Feather";
+import { styles } from "../styles/theme";
 
 export const Searcher = () => {
   const { characters, setCharacters } = useContext(CharacterContext);
@@ -13,13 +14,16 @@ export const Searcher = () => {
     setRes(
       characters.filter((element) => element.name.toLowerCase().includes(text))
     );
-    console.log(res);
+  
   }, [text]);
 
   return (
-    <View style={styles.container}>
+    <View  style={styles.directionRow}>
+
       <View style={styles.iconContainer}>
-        <Icon name="search" size={40} color="red" />
+
+        <Icon name="search" size={30} color="red" />
+
       </View>
 
       <TextInput
@@ -28,36 +32,9 @@ export const Searcher = () => {
         onChangeText={(newText) => setText(newText)}
         defaultValue={text}
       />
+      
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    marginTop: 70,
-  },
-  inputSearch: {
-    textAlign: "center",
-    flexDirection: "column",
-    backgroundColor: "#f9f9f9",
-    height: 50,
-    width: 400,
-    borderRadius: 10,
-  },
-  button: {
-    flexDirection: "column",
-    marginTop: 4,
-    width: 40,
-    height: 40,
-    backgroundColor: "red",
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  iconContainer: {
-    marginTop: 4,
-    width: 40,
-    height: 40,
-  },
-});
+

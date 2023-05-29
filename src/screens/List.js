@@ -3,22 +3,24 @@ import axios from "axios";
 import md5 from "blueimp-md5";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { CardCharacter } from "../components/CardCharacter";
 import { CharacterContext } from "../context/CharacterContext";
 import { Searcher } from "../components/Searcher";
+import { styles } from "../styles/theme";
 
 export const List = () => {
   const [characters, setCharacters] = useState([]);
-  const[res, setRes] = useState([]);
+  const [res, setRes] = useState([]);
   const publicKey = "769f0ff0d12989ea1a9c349404cf1e93";
   const privateKey = "c206acb8915ea08e5bbaa73bd49c0e8d3a9d05df";
   const timestamp = Date.now();
   const hash = md5(timestamp + privateKey + publicKey).toString();
   const url = `https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
 
-  // opcional: consumir api o crear lista prop
-  // mostrar en pantalla solo si se presiona en un boton
+  const imgBackground =
+    "https://i.pinimg.com/564x/46/0a/38/460a38fe5cf48622c86c84b51fefe8f0.jpg";
+
 
   useEffect(() => {
     axios
@@ -31,51 +33,48 @@ export const List = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(()=>{
-    console.log(res
-      );
-  },[res])
+
+  if (characters.length <= 0) {
+    return (
+
+      <View style={styles.containers}>
+
+        <ImageBackground
+          source={{
+            uri: imgBackground,
+          }}
+          style={styles.imgBackground}
+          resizeMode="cover"
+        >
+          <Text style={styles.texts}>Cargando personajes...</Text>
+
+        </ImageBackground>
+      </View>
+    );
+  }
   return (
-    <>
-      <View style={styles.container}>
-        <CharacterContext.Provider value={{ characters, setCharacters, res, setRes }}>
+    <View style={styles.containers}>
+
+      <ImageBackground
+        source={{
+          uri: imgBackground,
+        }}
+        style={styles.imgBackground}
+        resizeMode="cover"
+      >
+
+        <CharacterContext.Provider
+          value={{ characters, setCharacters, res, setRes }}
+        >
           <Searcher />
           <CardCharacter />
+
         </CharacterContext.Provider>
 
-        <StatusBar style="auto" />
-      </View>
-    </>
+      </ImageBackground>
+      
+    </View>
   );
 };
 
 //styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: "#2a0308",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "black",
-  },
-  viewCharacter: {
-    borderWidth: 1,
-    borderRadius: 5,
-    margin: 20,
-    backgroundColor: "#e2ac3f",
-    // width: "50%",
-  },
-  imgCharacter: {
-    resizeMode: "contain",
-    width: 200,
-    height: 300,
-    margin: 10,
-  },
-  image: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "center",
-    position: "absolute",
-    height: "100%",
-  },
-});

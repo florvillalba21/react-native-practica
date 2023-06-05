@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from "./src/screens/Home"
 import { List } from "./src/screens/List";
+import { Contact } from "./src/screens/Contact";
 
 
 const Stack = createNativeStackNavigator();
@@ -14,12 +15,19 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{ title: "Inicio" }}
+          options={{ title: "Inicio",
+          headerShown:false }}
         />
         <Stack.Screen
           name="List"
           component={List}
-          options={{ title: "Personajes",
+          options={{ title: "Personajes"
+  }}
+        />
+        <Stack.Screen
+          name="Contact"
+          component={Contact}
+          options={{ title: "Personajes"
   }}
         />
       </Stack.Navigator>

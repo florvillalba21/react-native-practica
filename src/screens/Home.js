@@ -47,6 +47,13 @@ export default function Home() {
               <Text style={styles.textButtons}>Ver personajes</Text>
 
             </Pressable>
+            <Pressable
+              onPress={() => navigation.navigate("Contact")}
+              style={styles.buttonHome}
+            >
+              <Text style={styles.textButtons}>Contactame</Text>
+
+            </Pressable>
 
           </View>
 
